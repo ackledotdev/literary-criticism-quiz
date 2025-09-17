@@ -9,47 +9,11 @@
 @theme {
 	--color-background: #f9fafb;
 	--color-foreground: #1f2937;
-	--color-primary: #2563eb;
-	--color-secondary: #10b981;
-	--color-error: #ef4444;
-	--color-warning: #f59e0b;
-	--color-info: #3b82f6;
 
-	--font-sans:
-		var(--font-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-		'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-sans: var(--font-sans);
 	--font-mono:
-		var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-		'Liberation Mono', 'Courier New', monospace;
+		var(--font-mono), ui-monospace, 'Courier New', monospace;
 
-	--animate-accordion-down: accordion-down 0.2s ease-out;
-	--animate-accordion-up: accordion-up 0.2s ease-out;
-	--animate-grow-snow: grow-snow 30s linear both 10s;
-
-	@keyframes accordion-down {
-		from {
-			height: 0;
-		}
-		to {
-			height: var(--radix-accordion-content-height);
-		}
-	}
-	@keyframes accordion-up {
-		from {
-			height: var(--radix-accordion-content-height);
-		}
-		to {
-			height: 0;
-		}
-	}
-	@keyframes grow-snow {
-		from {
-			scale: 1 1;
-		}
-		to {
-			scale: 1 4;
-		}
-	}
 }
 
 @utility animation-respectful {
