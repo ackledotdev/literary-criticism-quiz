@@ -82,7 +82,7 @@ export const StaticQuizData: ValidQuizData = {
 					association: [{ option: 'Structuralist', weight: 4 }]
 				},
 				{
-					response: 'Consider rubric and teachers expectation',
+					response: "Consider rubric and teacher's expectation",
 					association: [{ option: 'Psychoanalytic', weight: 4 }]
 				},
 				{
