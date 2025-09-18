@@ -65,14 +65,11 @@ export default function RootLayout({
 		<html lang='en-us'>
 			<head />
 			<body
-				className={cn(
-					'bg-background min-h-screen font-sans antialiased',
-					fontSans.variable
-				)}
+				className={cn('bg-background font-sans antialiased', fontSans.variable)}
 			>
 				{/* <Nav /> */}
 				{children}
-				<Footer />
+				{/* <Footer /> */}
 			</body>
 		</html>
 	);

@@ -11,6 +11,9 @@
 		"clean": "rm -rf .next *.tsbuildinfo"
 	},
 	"dependencies": {
+		"@radix-ui/react-checkbox": "^1.3.3",
+		"@radix-ui/react-label": "^2.1.7",
+		"@radix-ui/react-slot": "^1.2.3",
 		"@react-spring/web": "^10.0.2",
 		"@tailwindcss/postcss": "^4.1.13",
 		"class-variance-authority": "^0.7.1",
@@ -33,6 +36,7 @@
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"tailwindcss": "^4.1.13",
+		"tw-animate-css": "^1.3.8",
 		"typescript": "^5.9.2"
 	},
 	"license": "MIT"

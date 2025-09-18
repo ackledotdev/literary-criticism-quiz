@@ -19,7 +19,7 @@ export default function Bar({
 }) {
 	return (
 		<div
-			className={cn('bar-outside h-1 w-full p-0', className)}
+			className={cn('bar-outside h-4 w-full p-0', className)}
 			style={{ backgroundColor: bgColor, borderRadius: radius }}
 		>
 			<div

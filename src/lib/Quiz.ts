@@ -22,6 +22,10 @@ export class Quiz {
 			: null;
 	}
 
+	length() {
+		return this.questions.length;
+	}
+
 	evaluateScore(responses: QuizResponse) {
 		return evaluateQuizScore(this, responses);
 	}

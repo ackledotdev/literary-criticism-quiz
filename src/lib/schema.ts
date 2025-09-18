@@ -16,7 +16,7 @@ export interface Question {
 }
 
 export interface Answer {
-	association: WeightedOption;
+	association: WeightedOption[];
 	response: string;
 }
 
