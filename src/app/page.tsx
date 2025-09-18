@@ -113,6 +113,23 @@ export default function Home() {
 								</>
 							)) ?? []}
 						</p>
+						<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
+							You are a{' '}
+							<span className='font-bold'>{grade?.at(0)!.option}</span>!
+							<br />
+							(Matched{' '}
+							<span className='font-bold'>
+								{grade?.at(0)!.weight.toFixed(2)}%
+							</span>
+							)
+						</p>
+						<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
+							{Quiz.explanations?.[grade?.at(0)!.option ?? ''] ?? ''}
+						</p>
+						<p className='col-span-full text-sm text-neutral-500 italic lg:text-base'>
+							* Results may not be 100% accurate and are for entertainment
+							purposes only.
+						</p>
 					</div>
 				</div>
 				<Button
