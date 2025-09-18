@@ -35,7 +35,10 @@ export default function Home() {
 		<>
 			<main className='m-8 flex flex-col items-center gap-8 px-4 *:text-center lg:m-16'>
 				<h1 className='text-4xl font-bold'>{Quiz.title}</h1>
-				<div id='quiz-container' className='h-72 max-w-[120rem] self-stretch'>
+				<div
+					id='quiz-container'
+					className='min-h-72 self-stretch md:px-12 lg:px-24 xl:px-36 2xl:px-48'
+				>
 					<p
 						id='quiz-description'
 						style={{ display: descHidden ? 'none' : 'block' }}
@@ -80,10 +83,10 @@ export default function Home() {
 						style={{
 							display: resultsHidden ? 'none' : 'grid'
 						}}
-						className='grid-cols-3 gap-4 self-stretch lg:grid-cols-[12em_auto_4em]'
+						className='grid-cols-[8em_auto_4em] gap-2 self-stretch md:gap-4 lg:grid-cols-[12em_auto_8em] lg:gap-6'
 					>
 						<h2 className='col-span-full text-2xl font-bold'>Your Results</h2>
-						<p className='text-right leading-loose'>
+						<p className='text-right text-sm leading-loose lg:text-base'>
 							{...grade?.map((g) => (
 								<>
 									<span>{g.option}</span>
@@ -91,7 +94,7 @@ export default function Home() {
 								</>
 							)) ?? []}
 						</p>
-						<div className='flex flex-col gap-4 pt-2'>
+						<div className='flex flex-col gap-3 pt-2 lg:gap-4'>
 							{grade?.map((g, i) => (
 								<Bar
 									key={i}
@@ -102,7 +105,7 @@ export default function Home() {
 								/>
 							))}
 						</div>
-						<p className='text-left leading-loose'>
+						<p className='text-left text-sm leading-loose lg:text-base'>
 							{...grade?.map((g) => (
 								<>
 									<span>{Math.round(g.weight)}%</span>
