@@ -2,7 +2,6 @@ import { type Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import Footer from '@/components/layout/footer';
-import Nav from '@/components/layout/nav';
 import { RootUrl } from '@/lib/constants';
 import { fontSans } from './fonts';
 
