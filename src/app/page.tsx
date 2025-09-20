@@ -13,9 +13,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
+	const router = useRouter();
+
 	useEffect(() => {
-		if (window.location.host != PersonalDomain)
-			useRouter().push(PersonalDomain);
+		if (window.location.host != PersonalDomain) router.push(PersonalDomain);
 	});
 
 	const Quiz = new _Quiz(StaticQuizData);
