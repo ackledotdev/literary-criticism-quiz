@@ -16,7 +16,7 @@ export default function Home() {
 	useEffect(() => {
 		if (window.location.host != PersonalDomain)
 			useRouter().push(PersonalDomain);
-	}, [usePathname()]);
+	});
 
 	const Quiz = new _Quiz(StaticQuizData);
 	// const Collector = new ResponseCollector();
