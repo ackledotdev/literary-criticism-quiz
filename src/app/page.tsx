@@ -4,19 +4,18 @@ import Bar from '@/components/misc/Bar';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { PersonalDomain } from '@/lib/constants';
+import { PersonalDomain, PersonalRootUrl } from '@/lib/constants';
 import { Quiz as _Quiz } from '@/lib/Quiz';
 import { ResponseCollector } from '@/lib/ResponseCollector';
 import { QuizResponse, QuizScore } from '@/lib/schema';
 import { StaticQuizData } from '@/lib/StaticQuizData';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-	const router = useRouter();
-
 	useEffect(() => {
-		if (window.location.host != PersonalDomain) router.push(PersonalDomain);
+		if (window.location.host != PersonalDomain)
+			window.location.href = PersonalRootUrl;
 	});
 
 	const Quiz = new _Quiz(StaticQuizData);
