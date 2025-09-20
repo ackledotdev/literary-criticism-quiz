@@ -2,6 +2,7 @@ import { type Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import Footer from '@/components/layout/footer';
+import { Analytics } from '@vercel/analytics/next';
 import { RootUrl } from '@/lib/constants';
 import { fontSans } from './fonts';
 
@@ -66,9 +67,9 @@ export default function RootLayout({
 			<body
 				className={cn('bg-background font-sans antialiased', fontSans.variable)}
 			>
-				{/* <Nav /> */}
 				{children}
 				{/* <Footer /> */}
+				<Analytics />
 			</body>
 		</html>
 	);
