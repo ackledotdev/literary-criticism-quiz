@@ -4,17 +4,22 @@ import Bar from '@/components/misc/Bar';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { toast, Toaster } from '@/components/ui/sonner';
+import { useScreenshot } from '@/hooks/useScreenshot';
 import { PersonalDomain, PersonalRootUrl } from '@/lib/constants';
 import { Quiz as _Quiz } from '@/lib/Quiz';
 import { ResponseCollector } from '@/lib/ResponseCollector';
 import { QuizResponse, QuizScore } from '@/lib/schema';
 import { StaticQuizData } from '@/lib/StaticQuizData';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 export default function Home() {
 	useEffect(() => {
-		if (window.location.host != PersonalDomain)
+		if (
+			process.env.NODE_ENV === 'production' &&
+			window.location.host != PersonalDomain
+		)
 			window.location.href = PersonalRootUrl;
 	});
 
@@ -37,6 +42,9 @@ export default function Home() {
 	);
 
 	const [grade, setGrade] = useState<QuizScore>();
+
+	const resultsRef = useRef<HTMLDivElement>(null);
+	const { captureScreenshot, isCapturing } = useScreenshot();
 
 	return (
 		<>
@@ -88,55 +96,113 @@ export default function Home() {
 					<div
 						id='quiz-results'
 						style={{
-							display: resultsHidden ? 'none' : 'grid'
+							display: resultsHidden ? 'none' : 'flex'
 						}}
-						className='grid-cols-[8em_auto_4em] gap-2 self-stretch md:gap-4 lg:grid-cols-[12em_auto_8em] lg:gap-6'
+						className='flex-col gap-2'
 					>
-						<h2 className='col-span-full text-2xl font-bold'>Your Results</h2>
-						<p className='text-right text-sm leading-loose lg:text-base'>
-							{...grade?.map((g) => (
-								<>
-									<span>{g.option}</span>
-									<br />
-								</>
-							)) ?? []}
-						</p>
-						<div className='flex flex-col gap-3 pt-2 lg:gap-4'>
-							{grade?.map((g, i) => (
-								<Bar
-									key={i}
-									colorStart='#ffaaaa'
-									colorEnd='#ff0000'
-									bgColor='#dddddd'
-									width={Math.round(g.weight)}
-								/>
-							))}
+						<div
+							id='quiz-results-shareable'
+							className='grid grid-cols-[8em_auto_4em] gap-2 self-stretch md:gap-4 lg:grid-cols-[12em_auto_8em] lg:gap-6'
+							ref={resultsRef}
+						>
+							<h2 className='col-span-full text-2xl font-bold'>Your Results</h2>
+							<p className='text-right text-sm leading-loose lg:text-base'>
+								{...grade?.map((g) => (
+									<>
+										<span>{g.option}</span>
+										<br />
+									</>
+								)) ?? []}
+							</p>
+							<div className='flex flex-col gap-3 pt-2 lg:gap-4'>
+								{grade?.map((g, i) => (
+									<Bar
+										key={i}
+										colorStart='#ffaaaa'
+										colorEnd='#ff0000'
+										bgColor='#dddddd'
+										width={Math.round(g.weight)}
+									/>
+								))}
+							</div>
+							<p className='text-left text-sm leading-loose lg:text-base'>
+								{...grade?.map((g) => (
+									<>
+										<span>{Math.round(g.weight)}%</span>
+										<br />
+									</>
+								)) ?? []}
+							</p>
+							<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
+								You are a{' '}
+								<span className='font-bold'>{grade?.at(0)!.option}</span>!
+								<br />
+								(Matched{' '}
+								<span className='font-bold'>
+									{grade?.at(0)!.weight.toFixed(2)}%
+								</span>
+								)
+							</p>
+							<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
+								{Quiz.explanations?.[grade?.at(0)!.option ?? ''] ?? ''}
+							</p>
+							<p className='col-span-full text-sm text-neutral-500 italic lg:text-base'>
+								* Results may not be 100% accurate and are for entertainment
+								purposes only.
+							</p>
 						</div>
-						<p className='text-left text-sm leading-loose lg:text-base'>
-							{...grade?.map((g) => (
-								<>
-									<span>{Math.round(g.weight)}%</span>
-									<br />
-								</>
-							)) ?? []}
-						</p>
-						<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
-							You are a{' '}
-							<span className='font-bold'>{grade?.at(0)!.option}</span>!
-							<br />
-							(Matched{' '}
-							<span className='font-bold'>
-								{grade?.at(0)!.weight.toFixed(2)}%
-							</span>
-							)
-						</p>
-						<p className='col-span-full text-sm lg:pt-4 lg:text-base'>
-							{Quiz.explanations?.[grade?.at(0)!.option ?? ''] ?? ''}
-						</p>
-						<p className='col-span-full text-sm text-neutral-500 italic lg:text-base'>
-							* Results may not be 100% accurate and are for entertainment
-							purposes only.
-						</p>
+						<div className='flex flex-row justify-center gap-4'>
+							<Button
+								onClick={() => {
+									captureScreenshot(resultsRef as RefObject<HTMLElement>).then(
+										(dataUrl) => {
+											const file = dataUrlToFile(dataUrl, 'quiz-results.png');
+											if (
+												!!navigator.canShare &&
+												!!navigator.share &&
+												navigator.canShare({
+													files: [file],
+													text: 'My Literary Criticism Quiz Results!',
+													url: PersonalRootUrl
+												})
+											)
+												navigator.share({
+													files: [file],
+													text: 'My Literary Criticism Quiz Results!',
+													url: PersonalRootUrl
+												});
+											else {
+												// copy file
+												navigator.clipboard.write([
+													new ClipboardItem({
+														[file.type]: file
+													})
+												]);
+												toast.success(
+													'Results screenshot copied to clipboard!'
+												);
+											}
+										}
+									);
+								}}
+								disabled={isCapturing}
+							>
+								Share Results
+							</Button>
+							<Button
+								onClick={() => {
+									setDescHidden(false);
+									setQuestionsHidden(true);
+									setResultsHidden(true);
+									setQIndex(-1);
+									setResponses([]);
+									setCheckboxes([]);
+									setGrade(undefined);
+								}}
+							>
+								Retake Quiz
+							</Button>
+						</div>
 					</div>
 				</div>
 				<Button
@@ -146,6 +212,7 @@ export default function Home() {
 					{qIndex < 0 ? 'Start' : qIndex === quizLen - 1 ? 'Finish' : 'Next'}
 				</Button>
 			</main>
+			<Toaster position='top-right' />
 		</>
 	);
 
@@ -185,5 +252,19 @@ export default function Home() {
 				Quiz.getQuestionResponseSet(qIndex + 1)?.answers.length ?? 0
 			).fill(false)
 		);
+	}
+
+	function dataUrlToFile(
+		dataUrl: string,
+		filename: string = 'screenshot.png'
+	): File {
+		const arr = dataUrl.split(',');
+		const mimeMatch = arr[0].match(/:(.*?);/);
+		const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+		const bstr = atob(arr[1]);
+		let n = bstr.length;
+		const u8arr = new Uint8Array(n);
+		while (n--) u8arr[n] = bstr.charCodeAt(n);
+		return new File([u8arr], filename, { type: mime });
 	}
 }
