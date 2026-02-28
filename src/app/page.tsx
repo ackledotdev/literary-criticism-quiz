@@ -15,14 +15,14 @@ import { usePathname } from 'next/navigation';
 import { RefObject, useEffect, useRef, useState } from 'react';
 
 export default function Home() {
-	useEffect(() => {
+/*	useEffect(() => {
 		if (
 			process.env.NODE_ENV === 'production' &&
 			window.location.host != PersonalDomain
 		)
 			window.location.href = PersonalRootUrl;
 	});
-
+*/
 	const Quiz = new _Quiz(StaticQuizData);
 	// const Collector = new ResponseCollector();
 
